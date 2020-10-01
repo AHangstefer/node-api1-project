@@ -51,7 +51,8 @@ server.post("/users", (req, res)=> {
     }
     if(newUser) {
          res.status(201).json(newUser)
-    } else {
+    } 
+    else {
           res.status(500).json({
               errorMessage: "There was an error while saving the user to the database"
           })  
@@ -61,13 +62,13 @@ server.post("/users", (req, res)=> {
 server.delete("/users/:id", (req, res)=>{
     const id = req.params.id
     const user = db.getUserById(id)
-    const users = db.getUsers()
+    //const users = db.getUsers()
 
     if(!user){
         res.status(404).json({
             message: "The user with the specified ID does not exist"
         })
-        return users;
+        //console.log (users);
     }
 
     if (user) {
@@ -76,6 +77,35 @@ server.delete("/users/:id", (req, res)=>{
     else {
         res.status(500).json({
             errorMessage: "The user could not be removed"
+        })
+    }
+})
+
+server.put("/user/:id", (req, res)=> {
+    const id = req.params.id
+    const user = db.getUserById(id)
+
+    if (user) {
+        const updateUser = db.updateUser(id, {
+            name: req.body.name,
+            bio: req.body.bio
+        })
+
+        res.status(200).json(updateUser)
+    } 
+    if (!req.body.name || !req.body.bio){
+        return res.status(404).json({
+            errorMessage: "Please provide name and bio for the user."
+        })
+    }
+    if (!user) {
+        res.status(404).json({
+            message: "The user with the specified ID does not exist"
+        })
+    }
+    else {
+        res.status(500).json({
+            errorMessage: "The user information could not be modified"
         })
     }
 })
