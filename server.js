@@ -61,11 +61,13 @@ server.post("/users", (req, res)=> {
 server.delete("/users/:id", (req, res)=>{
     const id = req.params.id
     const user = db.getUserById(id)
+    const users = db.getUsers()
 
     if(!user){
         res.status(404).json({
             message: "The user with the specified ID does not exist"
         })
+        return users;
     }
 
     if (user) {
