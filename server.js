@@ -73,6 +73,9 @@ server.delete("/users/:id", (req, res)=>{
 
     if (user) {
         db.deleteUser(id)
+        res.status(200).json({
+            message: "user deleted"
+        })
     } 
     else {
         res.status(500).json({
@@ -81,7 +84,7 @@ server.delete("/users/:id", (req, res)=>{
     }
 })
 
-server.put("/user/:id", (req, res)=> {
+server.put("/users/:id", (req, res)=> {
     const id = req.params.id
     const user = db.getUserById(id)
 
@@ -112,6 +115,6 @@ server.put("/user/:id", (req, res)=> {
 
 
 
-server.listen(8080, () => {
+server.listen(8070, () => {
     console.log("server started")
 })
